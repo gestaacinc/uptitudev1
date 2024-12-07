@@ -1,0 +1,219 @@
+{% extends 'admin/base.html' %} {% block content %}
+<div class="container mx-auto font-sans">
+  <!-- Card -->
+  <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <!-- Card Header -->
+    <div
+      class="flex justify-between items-center px-6 py-4 bg-gray-100 border-b"
+    >
+      <div class="flex items-center space-x-2">
+        <!-- Icon -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 text-blue-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8 6H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-3M8 6V4a4 4 0 118 0v2M8 6h8"
+          />
+        </svg>
+        <!-- Text -->
+        <h1 class="text-lg font-semibold text-gray-700 uppercase tracking-wide">
+          Course Management
+        </h1>
+      </div>
+
+      <div class="flex space-x-2">
+        <!-- Bulk Delete Button -->
+        <button
+          id="bulkDeleteButton"
+          class="bg-red-500 text-white text-xs font-medium py-2 px-3 rounded hover:bg-red-600 disabled:opacity-50"
+          disabled
+          onclick="bulkDelete()"
+        >
+          Delete Selected
+        </button>
+        <!-- Add Course Button -->
+        <button
+          onclick="openModal('addCourseModal')"
+          class="bg-blue-500 text-white text-xs font-medium py-2 px-3 rounded hover:bg-blue-600"
+        >
+          + Add Course
+        </button>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="px-6 py-4">
+      <div class="relative">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search by Course Name, Type, or Qualification"
+          class="w-full px-4 py-2 border rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          onkeyup="filterTable()"
+        />
+        <span
+          class="absolute inset-y-0 right-4 flex items-center text-gray-400"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 16l-4-4m0 0l4-4m-4 4h16"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="relative overflow-x-auto">
+      <table id="courseTable" class="w-full text-sm text-left text-gray-800">
+        <!-- Table Header -->
+        <thead class="text-xs font-medium text-gray-600 uppercase bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3">
+              <input
+                type="checkbox"
+                id="selectAll"
+                onclick="toggleAllCheckboxes()"
+              />
+            </th>
+            <th scope="col" class="px-6 py-3">Course Name</th>
+            <th scope="col" class="px-6 py-3">Description</th>
+            <th scope="col" class="px-6 py-3">Type</th>
+            <th scope="col" class="px-6 py-3">Qualification</th>
+            <th scope="col" class="px-6 py-3 text-right">Fee</th>
+            <th scope="col" class="px-6 py-3 text-right">Duration</th>
+            <th scope="col" class="px-6 py-3 text-right">
+              <span class="sr-only">Actions</span>
+            </th>
+          </tr>
+        </thead>
+        <!-- Table Body -->
+        <tbody>
+          {% for course in courses %}
+          <tr class="bg-white border-b hover:bg-gray-50">
+            <td class="px-6 py-4 text-center">
+              <input
+                type="checkbox"
+                class="courseCheckbox"
+                value="{{ course.id }}"
+                onclick="updateBulkDeleteButton()"
+              />
+            </td>
+            <th
+              scope="row"
+              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+            >
+              {{ course.course_name }}
+            </th>
+            <td class="px-6 py-4 truncate max-w-xs text-gray-700">
+              {{ course.description }}
+            </td>
+            <td class="px-6 py-4 text-gray-700">{{ course.type }}</td>
+            <td class="px-6 py-4 text-gray-700">
+              {{ course.qualification_type }}
+            </td>
+            <td class="px-6 py-4 text-right text-gray-900 font-semibold">
+              ₱{{ '{:,.2f}'.format(course.fee) }}
+            </td>
+            <td class="px-6 py-4 text-right text-gray-700">
+              {{ course.duration }} days
+            </td>
+            <td class="px-6 py-4 text-right flex justify-end space-x-4">
+              <!-- Edit Button -->
+              <button
+                onclick="editCourse({{ course.id }})"
+                class="text-blue-500 hover:text-blue-700"
+                title="Edit"
+              >
+                <i class="fas fa-edit"></i>
+              </button>
+              <!-- Delete Button -->
+              <button
+                onclick="deleteCourse({{ course.id }})"
+                class="text-red-500 hover:text-red-700"
+                title="Delete"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="flex justify-between items-center p-4 bg-gray-100 border-t">
+      <div class="text-xs text-gray-500">
+        Showing {{ pagination.page }} of {{ pagination.pages }} pages
+      </div>
+      <div class="flex space-x-2">
+        {% if pagination.has_prev %}
+        <a
+          href="{{ url_for('course_management', page=pagination.prev_num) }}"
+          class="bg-gray-300 text-gray-700 text-xs font-medium px-3 py-1 rounded hover:bg-gray-400"
+        >
+          Previous
+        </a>
+        {% endif %} {% if pagination.has_next %}
+        <a
+          href="{{ url_for('course_management', page=pagination.next_num) }}"
+          class="bg-gray-300 text-gray-700 text-xs font-medium px-3 py-1 rounded hover:bg-gray-400"
+        >
+          Next
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include 'admin/add_course_modal.html' %} {% include
+'admin/update_course_modal.html' %}
+<script src="/static/js/course.js"></script>
+
+<script>
+  function filterTable() {
+    const input = document.getElementById("searchInput");
+    const filter = input.value.toLowerCase();
+    const table = document.getElementById("courseTable");
+    const rows = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) {
+      const courseName = rows[i]?.querySelector("th").textContent.toLowerCase();
+      const type = rows[i]
+        ?.querySelectorAll("td")[2]
+        ?.textContent.toLowerCase();
+      const qualification = rows[i]
+        ?.querySelectorAll("td")[3]
+        ?.textContent.toLowerCase();
+
+      if (
+        courseName.includes(filter) ||
+        type.includes(filter) ||
+        qualification.includes(filter)
+      ) {
+        rows[i].style.display = "";
+      } else {
+        rows[i].style.display = "none";
+      }
+    }
+  }
+</script>
+{% endblock %}

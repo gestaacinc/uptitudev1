@@ -1,0 +1,18 @@
+<div
+  id="addEnrolleeModal"
+  class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+>
+  <div class="bg-white rounded-lg w-3/4">
+    <div class="px-6 py-4 border-b flex justify-between">
+      <h2 class="text-lg font-semibold text-gray-700">Enroll Student</h2>
+      <button onclick="closeModal('addEnrolleeModal')" class="text-gray-500">
+        &times;
+      </button>
+    </div>
+    <div class="px-6 py-4 space-y-4">
+      {% include 'admin/enrollment/step1_personal_details.html' %} {% include
+      'admin/enrollment/step2_course_payment.html' %} {% include
+      'admin/enrollment/step3_document_upload.html' %}
+    </div>
+  </div>
+</div>

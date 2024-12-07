@@ -1,0 +1,87 @@
+{% extends 'admin/base.html' %} {% block content %}
+<div class="container mx-auto">
+  <h1 class="text-3xl font-bold mb-6">Dashboard Overview</h1>
+  <div class="grid grid-cols-3 gap-6">
+    <!-- Card 1: Total Enrollees -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-bold text-gray-800">Total Enrollees</h2>
+      <p class="text-4xl font-extrabold text-blue-500">{{ total_enrollees }}</p>
+      <p class="text-sm text-gray-500">
+        As of {{ start_date }} - {{ current_date }}
+      </p>
+      <p
+        class="text-sm {% if enrollee_growth >= 0 %}text-green-500{% else %}text-red-500{% endif %}"
+      >
+        {% if enrollee_growth >= 0 %} Increased by +{{ enrollee_growth|round(2)
+        }}% {% else %} Decreased by {{ enrollee_growth|round(2) }}% {% endif %}
+      </p>
+    </div>
+    <!-- Card 2: Active Courses -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-bold text-gray-800">Active Courses</h2>
+      <p class="text-4xl font-extrabold text-green-500">{{ active_courses }}</p>
+      <p class="text-sm text-gray-500">
+        As of {{ start_date }} - {{ current_date }}
+      </p>
+      <p
+        class="text-sm {% if course_change >= 0 %}text-green-500{% else %}text-red-500{% endif %}"
+      >
+        {% if course_change >= 0 %} Increased by +{{ course_change|round(2) }}%
+        {% else %} Decreased by {{ course_change|round(2) }}% {% endif %}
+      </p>
+    </div>
+    <!-- Card 3: Pending Payments -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-bold text-gray-800">Pending Payments</h2>
+      <p class="text-4xl font-extrabold text-red-500">
+        ₱{{ pending_payments|round(2) }}
+      </p>
+      <p class="text-sm text-gray-500">
+        As of {{ start_date }} - {{ current_date }}
+      </p>
+      <p class="text-sm text-orange-500">
+        {% if payment_growth > 0 %} Increased by +{{ payment_growth|round(2) }}%
+        {% elif payment_growth < 0 %} Decreased by {{ payment_growth|round(2)
+        }}% {% else %} No Change {% endif %}
+      </p>
+
+      <button
+        id="viewPendingPayments"
+        class="text-blue-500 hover:underline mt-2 inline-block"
+      >
+        View Details
+      </button>
+    </div>
+
+    <!-- Card 4: Pending Documents -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-bold text-gray-800">Pending Documents</h2>
+      <p class="text-4xl font-extrabold text-yellow-500">
+        {{ pending_documents }}
+      </p>
+      <p class="text-sm text-gray-500">
+        As of {{ start_date }} - {{ current_date }}
+      </p>
+      <p
+        class="text-sm {% if document_change >= 0 %}text-green-500{% else %}text-red-500{% endif %}"
+      >
+        {% if document_change >= 0 %} Improved by +{{ document_change|round(2)
+        }}% {% else %} Backlog increased by {{ document_change|abs|round(2) }}%
+        {% endif %}
+      </p>
+      <button
+        id="viewPendingDocuments"
+        class="text-blue-500 hover:underline mt-2 inline-block"
+      >
+        View Details
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modals -->
+{% include 'admin/pending_payments_modal.html' %} {% include
+'admin/pending_documents_modal.html' %} {% endblock %} {% block scripts %}
+<script src="/static/js/paymentsModal.js"></script>
+<script src="/static/js/documentsModal.js"></script>
+{% endblock %}

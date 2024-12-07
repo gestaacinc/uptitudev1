@@ -1,0 +1,100 @@
+{% extends 'base.html' %} {% block content %}
+<div class="w-full max-w-sm bg-white p-6 rounded-lg shadow-lg">
+  <!-- Logo -->
+  <div class="flex justify-center mb-8">
+    <img
+      src="{{ url_for('static', filename='img/uptitude_logo.png') }}"
+      alt="Uptitude Logo"
+      class="h-24 rounded-full shadow-lg"
+    />
+  </div>
+
+  <!-- Login Form -->
+  <h2 class="text-3xl font-extrabold mb-4 text-center text-gray-800">
+    Welcome Back!
+  </h2>
+  <p class="text-sm text-gray-500 mb-6 text-center">
+    Please log in to access the admin dashboard.
+  </p>
+  <form method="POST" novalidate>
+    <!-- Email -->
+    <div class="mb-4 relative">
+      <label for="email" class="block text-sm font-medium text-gray-700"
+        >Email</label
+      >
+      <div class="relative">
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          placeholder="Enter your email"
+          class="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <div
+          class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+        >
+          <i class="fas fa-envelope"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Password -->
+    <div class="mb-6 relative">
+      <label for="password" class="block text-sm font-medium text-gray-700"
+        >Password</label
+      >
+      <div class="relative">
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          placeholder="Enter your password"
+          class="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <div
+          class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+        >
+          <i class="fas fa-lock"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      class="w-full bg-blue-500 text-white py-3 px-4 rounded-lg font-bold hover:bg-blue-600 transition duration-300"
+    >
+      Log In
+    </button>
+  </form>
+
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %}
+  <div class="mt-4">
+    {% for category, message in messages %}
+    <div
+      class="flash-message p-3 text-sm text-white bg-{{ 'red' if category == 'danger' else 'green' }}-500 rounded-lg"
+    >
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %} {% endwith %}
+
+  <!-- Forgot Password -->
+  <p class="text-sm text-center text-gray-500 mt-6">
+    <a
+      href="javascript:void(0)"
+      id="forgot-password-link"
+      class="text-blue-500 hover:underline"
+    >
+      Forgot password?
+    </a>
+  </p>
+</div>
+
+<!-- Include the Forgot Password Modal -->
+{% include 'forgot_password_modal.html' %} {% endblock %}

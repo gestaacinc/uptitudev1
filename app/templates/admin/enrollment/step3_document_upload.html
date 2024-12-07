@@ -1,0 +1,96 @@
+<div id="step3DocumentUpload" class="step hidden">
+  <h3 class="text-lg font-semibold mb-4">Step 3: Upload Documents</h3>
+  <form id="uploadDocumentsForm" method="POST" enctype="multipart/form-data">
+    <!-- Diploma Upload -->
+    <div class="mb-4">
+      <label for="diploma" class="block text-sm font-medium text-gray-700">
+        Diploma
+      </label>
+      <div class="flex items-center space-x-4">
+        <input
+          type="file"
+          id="diploma"
+          name="diploma"
+          accept=".pdf,.jpg,.jpeg,.png"
+          class="border rounded-lg p-2"
+        />
+        <button
+          type="button"
+          onclick="uploadDocument('diploma')"
+          class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+        >
+          Upload
+        </button>
+        <span id="diplomaStatus" class="text-gray-500 text-sm"></span>
+      </div>
+    </div>
+
+    <!-- Form 137/138 Upload -->
+    <div class="mb-4">
+      <label for="form137" class="block text-sm font-medium text-gray-700">
+        Form 137/138
+      </label>
+      <div class="flex items-center space-x-4">
+        <input
+          type="file"
+          id="form137"
+          name="form137"
+          accept=".pdf,.jpg,.jpeg,.png"
+          class="border rounded-lg p-2"
+        />
+        <button
+          type="button"
+          onclick="uploadDocument('form137')"
+          class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+        >
+          Upload
+        </button>
+        <span id="form137Status" class="text-gray-500 text-sm"></span>
+      </div>
+    </div>
+
+    <!-- PSA Birth Certificate Upload -->
+    <div class="mb-4">
+      <label
+        for="birthCertificate"
+        class="block text-sm font-medium text-gray-700"
+      >
+        PSA Birth Certificate
+      </label>
+      <div class="flex items-center space-x-4">
+        <input
+          type="file"
+          id="birthCertificate"
+          name="birthCertificate"
+          accept=".pdf,.jpg,.jpeg,.png"
+          class="border rounded-lg p-2"
+        />
+        <button
+          type="button"
+          onclick="uploadDocument('birthCertificate')"
+          class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+        >
+          Upload
+        </button>
+        <span id="birthCertificateStatus" class="text-gray-500 text-sm"></span>
+      </div>
+    </div>
+
+    <div class="mt-4 flex justify-between">
+      <button
+        type="button"
+        onclick="previousStep()"
+        class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+      >
+        Previous
+      </button>
+      <button
+        type="button"
+        onclick="submitAllDocuments()"
+        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      >
+        Submit Enrollment
+      </button>
+    </div>
+  </form>
+</div>
