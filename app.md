@@ -230,4 +230,4 @@ This **six-sprint plan** covers the key features implied by the SQL schema:
 5. **Payment Management**  
 6. **Reporting & Administration**
 
-Each sprint includes tasks with acceptance criteria and rough time estimates. Adjust the sprint scope and duration based on your team’s **velocity** and specific **project requirements**. 
+ 
